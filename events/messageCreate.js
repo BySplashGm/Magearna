@@ -1,20 +1,25 @@
-const { Events, EmbedBuilder, AuditLogEvent } = require('discord.js');
+const { Events, EmbedBuilder, AuditLogEvent } = require("discord.js");
 
 module.exports = {
     name: Events.MessageCreate,
     async execute(message) {
         if (message.author.id == message.client.user.id) return;
 
-
         const bonjourMsgs = [
             `Bonjour <@${message.author.id}> ! Prêt(e) à attraper quelques Shiny aujourd'hui ? ✨`,
             `Salut <@${message.author.id}> ! As-tu ajouté de nouvelles entrées à ton Living Dex ? 📚`,
             `Salut <@${message.author.id}> ! Un Shiny repéré à l’horizon ou juste une envie de compléter le Pokédex ? 🚀`,
-            `Salutations ! Le mon Animacœur bat fort pour aider votre Living Dex ! ❤️⚙️`
+            `Salutations ! Le mon Animacœur bat fort pour aider votre Living Dex ! ❤️⚙️`,
         ];
-        const voiciLivingDex = [`Chaque Pokémon a une histoire. Ton Living Dex est un véritable musée ! 🏛️`];
-        const resetMsgs = [`Rappelle-toi, un bon dresseur ne compte pas les resets mais les réussites ! 🔄✨`];
-        const magearnaMsgs = [`Salut <@${message.author.id}> ! Je suis Magearna, votre guide mécanique et loyale. 🤖`];
+        const voiciLivingDex = [
+            `Chaque Pokémon a une histoire. Ton Living Dex est un véritable musée ! 🏛️`,
+        ];
+        const resetMsgs = [
+            `Rappelle-toi, un bon dresseur ne compte pas les resets mais les réussites ! 🔄✨`,
+        ];
+        const magearnaMsgs = [
+            `Salut <@${message.author.id}> ! Je suis Magearna, votre guide mécanique et loyale. 🤖`,
+        ];
         const shinyMsgs = [
             `Félicitations pour ton Shiny ! Il est temps de le montrer à tout le monde ! ✨🎉`,
             `WOW ! Ce Shiny est incroyable. Ton Pokédex s'en souviendra pour toujours ! 🏅`,
@@ -22,7 +27,7 @@ module.exports = {
             `Encore un Shiny ? Tu es une légende vivante de la chasse aux étoiles ! 🌟`,
             `La mécanique de la chance tourne en ta faveur. Persévère, dresseur ! ⚙️🍀`,
             `Ton Pokédex brille déjà, mais un nouveau Shiny est toujours magique ! 🌟`,
-            `Shiny trouvé ? Je vais ajouter ça à mon Pokédex mécanique interne. 📘⚙️`
+            `Shiny trouvé ? Je vais ajouter ça à mon Pokédex mécanique interne. 📘⚙️`,
         ];
 
         // Animacœur
@@ -66,65 +71,85 @@ module.exports = {
             `Savais-tu que Magearna ne rouille jamais ? Par contre, je peux être envahie de Porygons. 🤖`,
             `Un jour, on m’a demandé de remplacer la Poké Ball... J’ai dit : Non, je suis unique. ✨⚙️`,
             `La RNG ne me fait pas peur. J’ai vu des Pikachu shiny fuir en pleine rencontre. ⚡😭`,
-            `Si tu crois que trouver un shiny est difficile, essaye de me battre à la perfection mécanique. 😏⚙️`
+            `Si tu crois que trouver un shiny est difficile, essaye de me battre à la perfection mécanique. 😏⚙️`,
         ];
 
         const sentMessage = message.content.toLowerCase();
 
         // Message envoyé dans le général
         if (message.channel.id == 1309960053029208174) {
-            
-            if (sentMessage.startsWith('bonjour') || sentMessage.startsWith('bonsoir') || sentMessage.startsWith('salut')) {
-                const randomElement = bonjourMsgs[Math.floor(Math.random() * bonjourMsgs.length)];
+            if (
+                sentMessage.startsWith("bonjour") ||
+                sentMessage.startsWith("bonsoir") ||
+                sentMessage.startsWith("salut")
+            ) {
+                const randomElement =
+                    bonjourMsgs[Math.floor(Math.random() * bonjourMsgs.length)];
                 message.reply(randomElement);
-
-            } else if (sentMessage.includes('magearna ?')) {
-                const randomElement = magearnaMsgs[Math.floor(Math.random() * magearnaMsgs.length)];
+            } else if (sentMessage.includes("magearna ?")) {
+                const randomElement =
+                    magearnaMsgs[
+                        Math.floor(Math.random() * magearnaMsgs.length)
+                    ];
                 message.reply(randomElement);
-
-            } else if (sentMessage.includes('magearna')) {
-                const randomElement = funnyMsgs[Math.floor(Math.random() * funnyMsgs.length)];
+            } else if (sentMessage.includes("magearna")) {
+                const randomElement =
+                    funnyMsgs[Math.floor(Math.random() * funnyMsgs.length)];
                 message.reply(randomElement);
-
             }
         }
 
         // Message envoyé dans le salon shiny
-        if (message.channel.id == 1309960811539730583 && message.attachments.size > 0) {       
+        if (
+            message.channel.id == 1309960811539730583 &&
+            message.attachments.size > 0
+        ) {
             // Filtrer les pièces jointes pour les images
-            const image = message.attachments.some(attachment => 
-                attachment.contentType && attachment.contentType.startsWith('image/')
+            const image = message.attachments.some(
+                (attachment) =>
+                    attachment.contentType &&
+                    attachment.contentType.startsWith("image/")
             );
 
             if (image) {
-                const randomElement = shinyMsgs[Math.floor(Math.random() * shinyMsgs.length)];
+                const randomElement =
+                    shinyMsgs[Math.floor(Math.random() * shinyMsgs.length)];
                 message.reply(randomElement);
-                message.react('✨');
+                message.react("✨");
             }
         }
-
 
         const logs = await message.guild.fetchAuditLogs({
             type: AuditLogEvent.MessageDelete,
             limit: 1,
-          });
+        });
 
         const firstEntry = logs.entries.first();
         const { executorId, target, targetId } = firstEntry;
         const deleter = await message.client.users.fetch(executorId);
 
         const logEmbed = new EmbedBuilder()
-            .setColor('Green')
-            .setTitle('Message envoyé')
-            .setDescription(`Un message a été envoyé dans <#${message.channel.id}>`)
+            .setColor("Green")
+            .setTitle("Message envoyé")
+            .setDescription(
+                `Un message a été envoyé dans <#${message.channel.id}>`
+            )
             .addFields(
-                { name: 'Auteur du message', value: `<@${message.author.id}>` },
-                { name: 'Contenu', value: `\`${message.content}\`` || 'Aucun contenu' }
+                { name: "Auteur du message", value: `<@${message.author.id}>` },
+                {
+                    name: "Contenu",
+                    value: `\`${message.content}\`` || "Aucun contenu",
+                }
             )
             .setTimestamp()
-            .setFooter({text: 'Magearna', iconURL: message.client.user.displayAvatarURL()});
+            .setFooter({
+                text: "Magearna",
+                iconURL: message.client.user.displayAvatarURL(),
+            });
 
-        const logChannel = message.client.channels.cache.get(process.env.LOGMESSAGESCHANNEL);
+        const logChannel = message.client.channels.cache.get(
+            process.env.LOGMESSAGESCHANNEL
+        );
         logChannel.send({ embeds: [logEmbed] });
     },
 };
