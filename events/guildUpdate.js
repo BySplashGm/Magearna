@@ -2,33 +2,20 @@ const { Events, EmbedBuilder, AuditLogEvent } = require("discord.js");
 const config = require("../config");
 
 module.exports = {
-    name: Events.GuildRoleUpdate,
-    async execute(oldRole, newRole) {
+    name: Events.GuildUpdate,
+    async execute(oldGuild, newGuild) {
         try {
             const changes = [];
-            if (oldRole.name !== newRole.name) {
+            if (oldGuild.name !== newGuild.name) {
                 changes.push({
                     name: "Nom",
-                    value: `\`${oldRole.name}\` → \`${newRole.name}\``,
-                });
-            }
-            if (oldRole.hexColor !== newRole.hexColor) {
-                changes.push({
-                    name: "Couleur",
-                    value: `\`${oldRole.hexColor}\` → \`${newRole.hexColor}\``,
-                });
-            }
-            if (oldRole.permissions.bitfield !== newRole.permissions.bitfield) {
-                changes.push({
-                    name: "Permissions",
-                    value: "Permissions modifiées",
-                    inline: false,
+                    value: `\`${oldGuild.name}\` → \`${newGuild.name}\``,
                 });
             }
 
             if (changes.length === 0) return;
 
-            const guild = newRole.guild;
+            const guild = newGuild;
             const auditLogs = await guild.fetchAuditLogs({
                 limit: 1,
                 type: AuditLogEvent.RoleUpdate,
@@ -38,7 +25,7 @@ module.exports = {
 
             const logEmbed = new EmbedBuilder()
                 .setColor("Orange")
-                .setTitle(`Rôle ${oldRole.name} mis à jour`)
+                .setTitle(`Serveur ${oldGuild.name} mis à jour`)
                 .addFields(...changes, {
                     name: "Auteur",
                     value: author,
@@ -47,10 +34,10 @@ module.exports = {
                 .setTimestamp()
                 .setFooter({
                     text: config.name + " " + config.version,
-                    iconURL: newRole.client.user.displayAvatarURL(),
+                    iconURL: newGuild.client.user.displayAvatarURL(),
                 });
 
-            const logChannel = newRole.client.channels.cache.get(
+            const logChannel = newGuild.client.channels.cache.get(
                 config.logChannel
             );
             await logChannel.send({ embeds: [logEmbed] });

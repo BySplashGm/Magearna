@@ -4,6 +4,7 @@ const {
     AuditLogEvent,
     ChannelType,
 } = require("discord.js");
+const config = require("../config");
 
 module.exports = {
     name: Events.ChannelUpdate,
@@ -65,12 +66,12 @@ module.exports = {
                 )
                 .setTimestamp()
                 .setFooter({
-                    text: "Magearna",
+                    text: config.name + " " + config.version,
                     iconURL: newChannel.client.user.displayAvatarURL(),
                 });
 
             const logChannel = newChannel.client.channels.cache.get(
-                process.env.LOGCHANNEL
+                config.logChannel
             );
             await logChannel.send({ embeds: [logEmbed] });
         } catch (error) {

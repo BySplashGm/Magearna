@@ -1,4 +1,5 @@
 const { Events, EmbedBuilder, AuditLogEvent } = require("discord.js");
+const config = require("../config");
 
 module.exports = {
     name: Events.GuildBanAdd,
@@ -19,13 +20,11 @@ module.exports = {
                 .addFields({ name: "Auteur", value: author })
                 .setTimestamp()
                 .setFooter({
-                    text: "Magearna",
+                    text: config.name + " " + config.version,
                     iconURL: ban.client.user.displayAvatarURL(),
                 });
 
-            const logChannel = ban.client.channels.cache.get(
-                process.env.LOGCHANNEL
-            );
+            const logChannel = ban.client.channels.cache.get(config.logChannel);
             await logChannel.send({ embeds: [logEmbed] });
         } catch (error) {
             console.error("Erreur dans l'événement GuildBanAdd :", error);

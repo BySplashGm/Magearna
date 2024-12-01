@@ -1,4 +1,5 @@
 const { Events, EmbedBuilder, AuditLogEvent } = require("discord.js");
+const config = require("../config");
 
 module.exports = {
     name: Events.GuildMemberUpdate,
@@ -38,12 +39,12 @@ module.exports = {
                     )
                     .setTimestamp()
                     .setFooter({
-                        text: "Magearna",
-                        iconURL: newMember.client.user.displayAvatarURL(),
+                        text: config.name + " " + config.version,
+                        iconURL: newMember.user.displayAvatarURL(),
                     });
 
                 const logChannel = newMember.client.channels.cache.get(
-                    process.env.LOGCHANNEL
+                    config.logChannel
                 );
                 await logChannel.send({ embeds: [logEmbed] });
             }
@@ -95,7 +96,7 @@ module.exports = {
                 });
 
             const logChannel = newMember.client.channels.cache.get(
-                process.env.LOGCHANNEL
+                config.logChannel
             );
             await logChannel.send({ embeds: [logEmbed] });
         } catch (error) {

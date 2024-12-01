@@ -1,4 +1,5 @@
 const { Events, EmbedBuilder, AuditLogEvent } = require("discord.js");
+const config = require("../config");
 
 module.exports = {
     name: Events.MessageCreate,
@@ -76,6 +77,12 @@ module.exports = {
 
         const sentMessage = message.content.toLowerCase();
 
+        if (message.channel.id == 1310211252227932170) {
+            message.react("🟢");
+            message.react("🟡");
+            message.react("🔴");
+        }
+
         // Message envoyé dans le général
         if (message.channel.id == 1309960053029208174) {
             if (
@@ -99,7 +106,7 @@ module.exports = {
             }
         }
 
-        // Message envoyé dans le salon shiny
+        // Message contenant une image envoyé dans le salon shiny
         if (
             message.channel.id == 1309960811539730583 &&
             message.attachments.size > 0
@@ -128,7 +135,7 @@ module.exports = {
         const { executorId, target, targetId } = firstEntry;
         const deleter = await message.client.users.fetch(executorId);
 
-        const logEmbed = new EmbedBuilder()
+        /*const logEmbed = new EmbedBuilder()
             .setColor("Green")
             .setTitle("Message envoyé")
             .setDescription(
@@ -143,13 +150,13 @@ module.exports = {
             )
             .setTimestamp()
             .setFooter({
-                text: "Magearna",
+                text: config.name + " " + config.version,
                 iconURL: message.client.user.displayAvatarURL(),
             });
 
         const logChannel = message.client.channels.cache.get(
-            process.env.LOGMESSAGESCHANNEL
+            config.messagesLogChannel
         );
-        logChannel.send({ embeds: [logEmbed] });
+        logChannel.send({ embeds: [logEmbed] });*/
     },
 };

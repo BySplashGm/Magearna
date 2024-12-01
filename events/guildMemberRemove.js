@@ -1,4 +1,4 @@
-require("dotenv").config();
+const config = require("../config");
 const {
     Events,
     EmbedBuilder,
@@ -29,12 +29,12 @@ module.exports = {
                     .addFields({ name: "Auteur", value: author })
                     .setTimestamp()
                     .setFooter({
-                        text: "Magearna",
+                        text: config.name + " " + config.version,
                         iconURL: member.client.user.displayAvatarURL(),
                     });
 
                 const logChannel = member.client.channels.cache.get(
-                    process.env.LOGCHANNEL
+                    config.logChannel
                 );
                 await logChannel.send({ embeds: [logEmbed] });
             }
@@ -46,7 +46,7 @@ module.exports = {
                 })
                 .setColor("Red")
                 .setFooter({
-                    text: "Magearna",
+                    text: config.name + " " + config.version,
                     iconURL: member.client.user.displayAvatarURL(),
                 })
                 .setTimestamp()
@@ -78,7 +78,7 @@ module.exports = {
                 .setTitle("❌ Nouveau départ");
 
             const logChannel = member.client.channels.cache.get(
-                process.env.LOGCHANNEL
+                config.logChannel
             );
             logChannel.send({ embeds: [logEmbed] });
         } catch (error) {

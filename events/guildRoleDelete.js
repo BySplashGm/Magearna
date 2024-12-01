@@ -1,4 +1,5 @@
 const { Events, EmbedBuilder, AuditLogEvent } = require("discord.js");
+const config = require("../config");
 
 module.exports = {
     name: Events.GuildRoleDelete,
@@ -26,12 +27,12 @@ module.exports = {
                 )
                 .setTimestamp()
                 .setFooter({
-                    text: "Magearna",
+                    text: config.name + " " + config.version,
                     iconURL: role.client.user.displayAvatarURL(),
                 });
 
             const logChannel = role.client.channels.cache.get(
-                process.env.LOGCHANNEL
+                config.logChannel
             );
             await logChannel.send({ embeds: [logEmbed] });
         } catch (error) {

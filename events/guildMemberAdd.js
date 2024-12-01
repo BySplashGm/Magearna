@@ -1,18 +1,18 @@
 const { Events, EmbedBuilder, time, TimestampStyles } = require("discord.js");
-require("dotenv").config();
+const config = require("../config");
 
 module.exports = {
     name: Events.GuildMemberAdd,
     execute(member) {
         const messageEmbed = new EmbedBuilder()
-            .setColor("Purple")
+            .setColor("edb0f8")
             .setDescription(
                 `🎉 **Bienvenue, <@${member.user.id}> !** 🎉
             Nous sommes heureux de t’accueillir parmi nous !
             N’hésite pas à te présenter et à participer aux discussions ! Amuse-toi bien ! 😊`
             )
             .setFooter({
-                text: "Magearna",
+                text: config.name + " " + config.version,
                 iconURL: member.client.user.displayAvatarURL(),
             })
             .setThumbnail(member.user.displayAvatarURL())
@@ -29,7 +29,7 @@ module.exports = {
             })
             .setColor("Green")
             .setFooter({
-                text: "Magearna",
+                text: config.name + " " + config.version,
                 iconURL: member.client.user.displayAvatarURL(),
             })
             .setTimestamp()
@@ -58,9 +58,7 @@ module.exports = {
             )
             .setTitle("❎ Nouveau Membre");
 
-        const logChannel = member.client.channels.cache.get(
-            process.env.LOGCHANNEL
-        );
+        const logChannel = member.client.channels.cache.get(config.logChannel);
         logChannel.send({ embeds: [logEmbed] });
     },
 };

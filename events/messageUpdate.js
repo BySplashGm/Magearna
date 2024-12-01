@@ -1,4 +1,5 @@
 const { Events, EmbedBuilder, AuditLogEvent } = require("discord.js");
+const config = require("../config");
 
 module.exports = {
     name: Events.MessageUpdate,
@@ -37,12 +38,12 @@ module.exports = {
             )
             .setTimestamp()
             .setFooter({
-                text: "Magearna",
-                iconURL: oldMessage.client.user.displayAvatarURL(),
+                text: config.name + " " + config.version,
+                iconURL: newMessage.client.user.displayAvatarURL(),
             });
 
         const logChannel = oldMessage.client.channels.cache.get(
-            process.env.LOGMESSAGESCHANNEL
+            config.messagesLogChannel
         );
         logChannel.send({ embeds: [logEmbed] });
     },

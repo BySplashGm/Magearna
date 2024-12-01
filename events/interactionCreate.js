@@ -1,4 +1,5 @@
 const { Events, MessageFlags } = require("discord.js");
+const config = require("../config");
 
 module.exports = {
     name: Events.InteractionCreate,
