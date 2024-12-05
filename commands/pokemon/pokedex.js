@@ -8,6 +8,10 @@ function getPokemonId(name) {
 }
 
 module.exports = {
+    category: "Pokémon",
+    permissions: [],
+    ownerOnly: false,
+    usage: "/pokedex <Nom du Pokémon>",
     data: new SlashCommandBuilder()
         .setName("pokedex")
         .setDescription("Obtenir les informations d'un Pokémon")
@@ -23,7 +27,6 @@ module.exports = {
         const pokemon = interaction.options.getString("pokemon").toLowerCase();
 
         const pokemonName = pokedexFr[pokemon];
-
 
         const typeTranslations = {
             normal: "Normal ⚪",
@@ -198,20 +201,11 @@ module.exports = {
 
             await interaction.reply({ embeds: [embed] });
         } catch (error) {
-            if (error.response?.status === 404) {
-                return interaction.reply(
-                    `Désolé, je n'ai pas trouvé le Pokémon "${pokemonName}". Vérifie son nom !`
-                );
-            }
-
-            console.error("Erreur API:", {
-                status: error.response?.status,
-                data: error.response?.data,
+            await interaction.reply({
+                content:
+                    "Désolé, je n'ai pas trouvé ce Pokémon. Vérifie son nom et réessaie sans accent ou caractère spécial.",
+                ephemeral: true,
             });
-
-            await interaction.reply(
-                `Désolé, je n'ai pas trouvé ce Pokémon. Vérifie son nom !`
-            );
         }
     },
 };
