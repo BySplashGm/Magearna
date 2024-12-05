@@ -19,6 +19,11 @@ module.exports = {
                     name: "Utilitaires",
                     value: "`ping`",
                     inline: true,
+                },
+                {
+                    name: "Pokémon",
+                    value: "`pokedex`, `shiny`, `nonshiny`",
+                    inline: true,
                 }
             )
             .setTimestamp();

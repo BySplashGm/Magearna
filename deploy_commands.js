@@ -41,7 +41,7 @@ module.exports = async function deployCommands() {
 
         // The put method is used to fully refresh all commands in the guild with the current set
         const data = await rest.put(
-            Routes.applicationGuildCommands(config.botID, config.guildID),
+            process.env.CONFIGTYPE == "DEV" ? Routes.applicationGuildCommands(config.devID, config.devGuild) : Routes.applicationGuildCommands(config.botID, config.guildID),
             { body: commands }
         );
 

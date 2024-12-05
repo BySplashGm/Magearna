@@ -1,6 +1,7 @@
 const { SlashCommandBuilder, EmbedBuilder } = require("discord.js");
 const axios = require("axios");
 const config = require("../../config.js");
+const pokedexFr = require("../../pokedexFr.json");
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -9,13 +10,15 @@ module.exports = {
         .addStringOption((option) =>
             option
                 .setName("pokemon")
-                .setDescription("Nom anglais ou numéro du Pokémon")
+                .setDescription("Nom du Pokémon")
                 .setRequired(true)
                 .setMinLength(1)
                 .setMaxLength(30)
         ),
     async execute(interaction, client) {
-        const pokemonName = interaction.options.getString("pokemon").toLowerCase();
+        const pokemon = interaction.options.getString("pokemon").toLowerCase();
+
+        const pokemonName = pokedexFr[pokemon];
 
         try {
             const response = await axios.get(
