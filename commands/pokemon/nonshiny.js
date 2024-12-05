@@ -4,6 +4,10 @@ const config = require("../../config.js");
 const pokedexFr = require("../../pokedexFr.json");
 
 module.exports = {
+    category: "Pokémon",
+    permissions: [],
+    ownerOnly: false,
+    usage: "/nonshiny <Nom du Pokémon>",
     data: new SlashCommandBuilder()
         .setName("nonshiny")
         .setDescription("Obtenez une image d'un Pokémon sous sa forme normale.")
@@ -58,12 +62,12 @@ module.exports = {
                 .setTimestamp();
 
             await interaction.reply({ embeds: [embed] });
-
         } catch (error) {
-            console.error(error);
-            await interaction.reply(
-                `Désolé, je n'ai pas trouvé ce Pokémon. Vérifie son nom anglais et réessaie.`
-            );
+            await interaction.reply({
+                content:
+                    "Désolé, je n'ai pas trouvé ce Pokémon. Vérifie son nom et réessaie sans accent ou caractère spécial.",
+                ephemeral: true,
+            });
         }
     },
 };
