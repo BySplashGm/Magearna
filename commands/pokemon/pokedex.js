@@ -1,6 +1,11 @@
 const { SlashCommandBuilder, EmbedBuilder } = require("discord.js");
+const pokedexFr = require("../../pokedexFr.json");
 const axios = require("axios");
 const config = require("../../config.js");
+
+function getPokemonId(name) {
+    return pokedexFr[name] || null; // Renvoie l'id ou null si non trouvé
+}
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -9,13 +14,17 @@ module.exports = {
         .addStringOption((option) =>
             option
                 .setName("pokemon")
-                .setDescription("Nom en anglais ou numéro du Pokémon")
+                .setDescription("Nom du Pokémon")
                 .setRequired(true)
                 .setMinLength(1)
                 .setMaxLength(30)
         ),
     async execute(interaction, client) {
-        const pokemonName = interaction.options.getString("pokemon");
+        const pokemon = interaction.options.getString("pokemon").toLowerCase();
+
+        const pokemonName = pokedexFr[pokemon];
+
+
         const typeTranslations = {
             normal: "Normal ⚪",
             fire: "Feu 🔥",
@@ -189,9 +198,19 @@ module.exports = {
 
             await interaction.reply({ embeds: [embed] });
         } catch (error) {
-            console.error(error);
+            if (error.response?.status === 404) {
+                return interaction.reply(
+                    `Désolé, je n'ai pas trouvé le Pokémon "${pokemonName}". Vérifie son nom !`
+                );
+            }
+
+            console.error("Erreur API:", {
+                status: error.response?.status,
+                data: error.response?.data,
+            });
+
             await interaction.reply(
-                `Désolé, je n'ai pas trouvé ce Pokémon. Vérifie son nom anglais et réessaie.`
+                `Désolé, je n'ai pas trouvé ce Pokémon. Vérifie son nom !`
             );
         }
     },
