@@ -4,7 +4,7 @@ const config = require("../../config");
 module.exports = {
     category: "Admin",
     permissions: ["Administrator"],
-    ownerOnly: true,
+    ownerOnly: false,
     usage: "/announcement <titre> <message>",
     data: new SlashCommandBuilder()
         .setName("announcement")
