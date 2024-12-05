@@ -1,10 +1,10 @@
 const { SlashCommandBuilder, EmbedBuilder } = require("discord.js");
-const config = require("../../config.js");
+const config = require("../../config");
 
 module.exports = {
     category: "Admin",
-    permissions: ["ADMINISTRATOR"],
-    ownerOnly: false,
+    permissions: ["Administrator"],
+    ownerOnly: true,
     usage: "/announcement <titre> <message>",
     data: new SlashCommandBuilder()
         .setName("announcement")
