@@ -1,6 +1,6 @@
 # Magearna 🤖
 
-Magearna is a lightweight and modular Discord bot featuring a small set of useful commands centered around Pokémon and server utilities. It includes a Pokédex, Pokémon image generator (normal and shiny), type chart viewer, and basic tools like uptime and announcements. Designed for easy deployment and minimal configuration, Magearna is ideal for Pokémon-themed communities.
+Magearna is a lightweight and modular Discord bot featuring a small set of useful commands centered around Pokémon
 
 ## Features ✨
 - **Command Handling:** Modular command structure for easy extension.
